@@ -68,5 +68,11 @@ java -jar douyin-spider-0.0.1-SNAPSHOT.jar
 
 服务器需要开9022端口。  
 
-跑脚本需要间隔3秒，否则可能出现抖音风控
+跑脚本需要间隔3秒，否则可能出现抖音风控  
+
+##### 其他
+清理nohup.out 日志
+```
+cat /dev/null > /www/wwwroot/douyin-register-spider/target/nohup.out
+```
 
