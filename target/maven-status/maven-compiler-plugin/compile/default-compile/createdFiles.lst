@@ -1,0 +1,8 @@
+com/douyin/spider/controller/DouyinController.class
+com/douyin/spider/util/DouYinRegisterInfo.class
+com/douyin/spider/jni/JniDispatchXGorgon.class
+com/douyin/spider/util/URLUtil.class
+com/douyin/spider/DouyinSpiderApplication.class
+com/douyin/spider/service/XGorgonService.class
+com/douyin/spider/jni/JniDispatchRegister.class
+com/douyin/spider/service/RegisterService.class
