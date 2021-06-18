@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <properties>
+        <Property name="console-pattern">%d{yyyy-MM-dd HH:mm:ss} [%level] [%c{1}:%L] %msg%n
+        </Property>
+        <property name="log-file">log</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${console-pattern}"/>
+        </Console>
+
+        <RollingFile name="TASK" fileName="${log-file}/logs.log"
+                     filePattern="${log-file}/logs_%d{yyyy-MM-dd}.log">
+            <!-- 输出格式 -->
+            <PatternLayout pattern="${console-pattern}"/>
+            <Policies>
+                <!-- 每1天更新一次 -->
+                <TimeBasedTriggeringPolicy modulate="true"
+                                           interval="1"/>
+                <!-- 此处为每个文件大小策略限制，使用它一般会在文件中filePattern采用%i模式 -->
+                <!-- <SizeBasedTriggeringPolicy size="128KB" /> -->
+            </Policies>
+            <!-- 最多备份30天以内的日志，此处为策略限制，Delete中可以按自己需要用正则表达式编写 -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="${log-file}" maxDepth="1">
+                    <IfFileName glob="logs_*.log"/>
+                    <IfLastModified age="30d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <root level="info">
+            <appender-ref ref="Console" level="info"/>
+            <AppenderRef ref="TASK"/>
+        </root>
+    </Loggers>
+
+</Configuration>
