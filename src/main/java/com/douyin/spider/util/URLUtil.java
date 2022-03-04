@@ -15,7 +15,7 @@ public class URLUtil {
     private static Logger logger = LoggerFactory.getLogger(URLUtil.class);
 
     public static String replaceParam(String url, Map<String,Object> device_params){
-        logger.info("【替换前URL】"+url);
+//        logger.info("【替换前URL】"+url);
         String[] params = url.substring(url.indexOf("?") + 1).split("&");
         for(int i = 0;i< params.length;i++ ){
             String[] split1 = params[i].split("=");
@@ -26,7 +26,7 @@ public class URLUtil {
         }
         String uri = String.join("&",params);
         String returnUrl = url.substring(0,url.indexOf("?")+1)+uri;
-        logger.info("【替换后URL】"+returnUrl);
+//        logger.info("【替换后URL】"+returnUrl);
         return returnUrl;
     }
 

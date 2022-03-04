@@ -170,7 +170,7 @@ public class XGorgonService {
         return new String(cArr);
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         RegisterService deviceService = new RegisterService();
         Map<String, Object> registerMessage = deviceService.register();
         if (registerMessage != null) {

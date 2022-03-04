@@ -7,13 +7,13 @@ import java.util.*;
 public class DouYinRegisterInfo {
 
     /**
+     * @return java.util.Map<java.lang.String, java.lang.Object>
      * @Description //TODO 设备信息初始化
      * @Param []
-     * @return java.util.Map<java.lang.String,java.lang.Object>
      **/
-    public static Map<String, Object> getDeviceParams(){
-        String uuid = "3529"+String.valueOf(new Random().nextInt(999))+(new Random().nextInt(899999999)+100000000);
-        long time =  System.currentTimeMillis();
+    public static Map<String, Object> getDeviceParams() {
+        String uuid = "3529" + String.valueOf(new Random().nextInt(999)) + (new Random().nextInt(899999999) + 100000000);
+        long time = System.currentTimeMillis();
         Map<String, Object> deviceParams = new HashMap<>(32);
         deviceParams.put("ac", "wifi");
         deviceParams.put("aid", "2329");
@@ -28,9 +28,8 @@ public class DouYinRegisterInfo {
         deviceParams.put("update_version_code", "12509900"); //11509900
         deviceParams.put("version_code", "120500"); //110500
         deviceParams.put("version_name", "12.5.0"); //11.5.0
-        deviceParams.put("udid", uuid);
         deviceParams.put("uuid", uuid);
-        deviceParams.put("openudid", UUID.randomUUID().toString().replaceAll("-","").substring(16));
+        deviceParams.put("openudid", UUID.randomUUID().toString().replaceAll("-", "").substring(16));
         deviceParams.put("mac_address", randomMac());
         deviceParams.put("cdid", UUID.randomUUID().toString());
         deviceParams.put("sim_serial_number", "");      // 89860042191573218602
@@ -40,25 +39,25 @@ public class DouYinRegisterInfo {
         deviceParams.put("cpu_abi", "arm64-v8a");
         deviceParams.put("device_model", "MI%209"); //  ONEPLUS%20A3000
         deviceParams.put("resolution", "1080*1920");
-        deviceParams.put("_rticket",time);
-        deviceParams.put("ts", time/1000);
+        deviceParams.put("_rticket", time);
+        deviceParams.put("ts", time / 1000);
         return deviceParams;
     }
 
 
     /**
+     * @return org.json.JSONObject
      * @Description //TODO 设备信息注册请求体
      * @Param [deviceParams]
-     * @return org.json.JSONObject
      **/
-    public static JSONObject getRegisterInfo(Map<String,Object> deviceParams ) {
+    public static JSONObject getRegisterInfo(Map<String, Object> deviceParams) {
 
         Map<String, String> temp = new HashMap<>(16);
-        if(deviceParams.containsKey("sim_serial_number")){
+        if (deviceParams.containsKey("sim_serial_number")) {
             String sim_serial_number = deviceParams.get("sim_serial_number").toString();
-            temp.put("sim_serial_number",sim_serial_number);
-        }else {
-            temp.put("sim_serial_number",""); //89860118841817353175
+            temp.put("sim_serial_number", sim_serial_number);
+        } else {
+            temp.put("sim_serial_number", ""); //89860118841817353175
         }
         List<Map<String, String>> simSerialNumber = new ArrayList<>();
         simSerialNumber.add(temp);
@@ -92,7 +91,7 @@ public class DouYinRegisterInfo {
         header.put("display_density", "xhdpi");
         header.put("resolution", deviceParams.get("resolution"));
         header.put("language", "zh");
-        header.put("mc", deviceParams.containsKey("mac_address")? deviceParams.get("mac_address"):randomMac());
+        header.put("mc", deviceParams.containsKey("mac_address") ? deviceParams.get("mac_address") : randomMac());
         header.put("timezone", 8);
         header.put("access", deviceParams.get("ac"));
         header.put("not_request_sender", 0);
@@ -101,8 +100,8 @@ public class DouYinRegisterInfo {
         //手机硬件相关
         header.put("rom_version", deviceParams.get("rom_version"));
         header.put("sig_hash", "aea615ab910015038f73c47e45d21466");
-        header.put("openudid", deviceParams.containsKey("openudid")?deviceParams.get("openudid"): UUID.randomUUID().toString().replaceAll("-","").substring(16));
-        header.put("udid", deviceParams.containsKey("uuid")? deviceParams.get("uuid"):"868374033134180");
+        header.put("openudid", deviceParams.containsKey("openudid") ? deviceParams.get("openudid") : UUID.randomUUID().toString().replaceAll("-", "").substring(16));
+        header.put("udid", deviceParams.containsKey("uuid") ? deviceParams.get("uuid") : "868374033134180");
         header.put("clientudid", UUID.randomUUID().toString());
         header.put("serial_number", ""); //3e04d6367cf5
         header.put("sim_serial_number", simSerialNumber);
@@ -140,7 +139,7 @@ public class DouYinRegisterInfo {
         return String.join(SEPARATOR_OF_MAC, mac);
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
     }
 }

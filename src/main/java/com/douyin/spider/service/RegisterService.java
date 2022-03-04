@@ -1,4 +1,5 @@
 package com.douyin.spider.service;
+import com.alibaba.fastjson.JSON;
 import com.douyin.spider.jni.JniDispatchRegister;
 import com.douyin.spider.util.DouYinRegisterInfo;
 import com.douyin.spider.util.URLUtil;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketAddress;
 import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
@@ -25,7 +29,8 @@ import java.util.zip.GZIPOutputStream;
 public class RegisterService {
     private static Logger logger = LoggerFactory.getLogger(RegisterService.class);
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         RegisterService deviceService = new RegisterService();
 
         Map<String, Object> registerMessage = deviceService.register();
@@ -38,7 +43,7 @@ public class RegisterService {
     JniDispatchRegister jniRegister;
 
 
-    public Map<String, Object> register() {
+    public Map<String, Object> register() throws IOException {
         // 获得设备信息
         Map<String, Object> deviceParams = DouYinRegisterInfo.getDeviceParams();
         // 构建注册请求体
@@ -86,7 +91,7 @@ public class RegisterService {
      * @Date 2020/9/21 18:44
      * @Param [deviceParam, ttbody]
      **/
-    public String callRegisterUrl(Map<String, Object> deviceParam, byte[] requestBody) {
+    public String callRegisterUrl(Map<String, Object> deviceParam, byte[] requestBody) throws IOException {
 
         String url = "https://log.snssdk.com/service/2/device_register/?ac=wifi&mac_address=C0%3AEE%3AFB%3AD5%3A4B%3A16&channel=oppo&aid=2329&app_name=douyin_lite&version_code=110500&version_name=11.5.0&device_platform=android&ssmix=a&device_type=ONEPLUS+A3000&device_brand=OnePlus&language=zh&os_api=23&os_version=6.0.1&uuid=860046033047160&openudid=d4080df15130f0d9&manifest_version_code=110500&resolution=1080*1920&dpi=480&update_version_code=11509900&_rticket=1600423440596&mcc_mnc=46011&ts=1600423440&app_type=normal&cdid=4dda0a2b-6572-418c-bdfa-89cfd78a3aaf&tt_data=a&os_api=23&device_type=ONEPLUS%20A3000&ssmix=a&manifest_version_code=110500&dpi=480&uuid=860046033047160&app_name=douyin_lite&version_name=11.5.0&ts=1600423440&app_type=normal&ac=wifi&update_version_code=11509900&channel=oppo&_rticket=1600423440787&device_platform=android&version_code=110500&mac_address=C0%3AEE%3AFB%3AD5%3A4B%3A16&cdid=4dda0a2b-6572-418c-bdfa-89cfd78a3aaf&openudid=d4080df15130f0d9&device_id=40178045261&resolution=1080*1920&os_version=6.0.1&language=zh&device_brand=OnePlus&aid=2329&mcc_mnc=46011";
         url = URLUtil.replaceParam(url, deviceParam);
@@ -95,6 +100,22 @@ public class RegisterService {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/octet-stream;tt-data=a");
+
+        Request requests = new Request.Builder()
+                .url("http://125.77.166.11:9822/index.php?s=/api/public_data/getProxys")
+                .method("GET", null)
+                .build();
+        Response responses = client.newCall(requests).execute();
+        String res = responses.body().string();
+        com.alibaba.fastjson.JSONObject responseJson = JSON.parseObject(res);
+        logger.info("【代理ip结果】" + responseJson.getString("ip"));
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        // 设置代理地址
+        SocketAddress sa = new InetSocketAddress(responseJson.getString("ip"), responseJson.getInteger("port"));
+        builder.proxy(new Proxy(Proxy.Type.HTTP, sa));
+
+        OkHttpClient clients = builder.build();
         RequestBody body = RequestBody.create(mediaType, requestBody);
         Request request = new Request.Builder()
                 .url(url)
@@ -103,10 +124,10 @@ public class RegisterService {
                 .addHeader("Connection", "keep-alive")
                 .addHeader("sdk-version", "1")
                 .addHeader("Content-Type", "application/octet-stream;tt-data=a")
-                .addHeader("User-Agent", "com.ss.android.ugc.aweme/870 (Linux; U; Android 7.1.2; zh_CN; SM-G9650; Build/N2G47H; Cronet/58.0.2991.0)")
+                .addHeader("User-Agent", "com.ss.android.ugc.aweme/870 (Linux; U; Android 7.1.2; zh_CN; SM-G9651; Build/N2G47H; Cronet/58.0.2991.0)")
                 .build();
         try {
-            Response response = client.newCall(request).execute();
+            Response response = clients.newCall(request).execute();
             String resp = response.body().string();
             logger.info("【注册返回结果】" + resp);
             return resp;
@@ -149,12 +170,26 @@ public class RegisterService {
      * @Param [device_params]
      * @return void
      **/
-    public void appAlert(Map<String,Object> device_params){
+    public void appAlert(Map<String,Object> device_params) throws IOException {
         String url = "https://ichannel.snssdk.com/service/2/app_alert_check/?build_serial=37c96a14&timezone=8.0&carrier=CHN-CT&mcc_mnc=46011&sim_region=cn&sim_serial_number=89860320750105912020&device_id=40178045261&ac=wifi&mac_address=C0%3AEE%3AFB%3AD5%3A4B%3A16&channel=oppo&aid=2329&app_name=douyin_lite&version_code=110500&version_name=11.5.0&device_platform=android&ssmix=a&device_type=ONEPLUS+A3000&device_brand=OnePlus&language=zh&os_api=23&os_version=6.0.1&uuid=860046033047160&openudid=d4080df15130f0d9&manifest_version_code=110500&resolution=1080*1920&dpi=480&update_version_code=11509900&_rticket=1600423440642&ts=1600423440&app_type=normal&cdid=4dda0a2b-6572-418c-bdfa-89cfd78a3aaf&req_id=7522ead3-00cb-435c-9376-5dd2e012bc71&os_api=23&device_type=ONEPLUS%20A3000&ssmix=a&manifest_version_code=110500&dpi=480&uuid=860046033047160&app_name=douyin_lite&version_name=11.5.0&ts=1600423440&app_type=normal&ac=wifi&update_version_code=11509900&channel=oppo&_rticket=1600423440803&device_platform=android&version_code=110500&mac_address=C0%3AEE%3AFB%3AD5%3A4B%3A16&cdid=4dda0a2b-6572-418c-bdfa-89cfd78a3aaf&openudid=d4080df15130f0d9&device_id=40178045261&resolution=1080*1920&os_version=6.0.1&language=zh&device_brand=OnePlus&aid=2329&mcc_mnc=46011";
         url = URLUtil.replaceParam(url, device_params);
         logger.debug("【激活URL】"+url);
+
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
+        Request requests = new Request.Builder()
+                .url("http://125.77.166.11:9822/index.php?s=/api/public_data/getProxys")
+                .method("GET", null)
+                .build();
+        Response responses = client.newCall(requests).execute();
+        String res = responses.body().string();
+        com.alibaba.fastjson.JSONObject responseJson = JSON.parseObject(res);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        // 设置代理地址
+        SocketAddress sa = new InetSocketAddress(responseJson.getString("ip"), responseJson.getInteger("port"));
+        builder.proxy(new Proxy(Proxy.Type.HTTP, sa));
+
+        OkHttpClient clients = builder.build();
         Request request = new Request.Builder()
                 .url(url)
                 .method("GET", null)
@@ -164,11 +199,11 @@ public class RegisterService {
 //                .addHeader("X-Tt-Token", "0054151ee13867e63b34fceb2561855906969c4f162e9c5ceb4fa8923a01e8f767737d9e1aaa54e7877b190357b3247090a")
                 .addHeader("sdk-version", "1")
 //                .addHeader("x-tt-trace-id", "00-a0c903940995acc514d89fdbe82f0919-a0c903940995acc5-01")
-                .addHeader("User-Agent", "com.ss.android.ugc.aweme.lite/110500 (Linux; U; Android 6.0.1; zh_CN; ONEPLUS A3000; Build/MMB29M; Cronet/TTNetVersion:4df3ca9d 2019-11-25)")
+                .addHeader("User-Agent", "com.ss.android.ugc.aweme.lite/110500 (Linux; U; Android 6.0.1; zh_CN; ONEPLUS A3000; Build/MMB29M; Cronet/TTNetVersion:4df3ca9d 2020-11-25)")
                 .build();
         try {
-            Response response = client.newCall(request).execute();
-            logger.debug("【激活情况】"+response.body().string());
+            Response response = clients.newCall(request).execute();
+            logger.info("【激活情况】"+response.body().string());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,14 +31,14 @@ public class DouyinController {
 
     @RequestMapping(value = "register",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> register(){
+    public Map<String,Object> register() throws IOException {
         return registerService.register();
     }
 
     @RequestMapping(value = "getXGorgon",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getXGorgon(@RequestBody String url,
-                                         @RequestParam(defaultValue = "false") Boolean isRegister){
+                                         @RequestParam(defaultValue = "false") Boolean isRegister) throws IOException {
         if(url == null || url.isEmpty()){
             return new HashMap<>();
         }
