@@ -48,13 +48,13 @@ public class RegisterService {
         Map<String, Object> deviceParams = DouYinRegisterInfo.getDeviceParams();
         // 构建注册请求体
         JSONObject registerInfo = DouYinRegisterInfo.getRegisterInfo(deviceParams);
-        logger.debug("【registerInfo】"+registerInfo);
+        logger.info("【registerInfo】"+registerInfo);
         // 先将请求体进行压缩
         byte[] data = compress(registerInfo.toString(), "utf-8");
+
         // 对data进行加密
         byte[] tt = jniRegister.callttEncryptMethod(data);
-//        logger.info("string 类型"+ Arrays.toString(tt));
-//        logger.info("byte 【"+ Arrays.toString((byte[]) ((DvmObject) ret).getValue()));
+        logger.info("【data加密参数】" + tt.toString());
         String registerResponse = callRegisterUrl(deviceParams, tt);
         if (registerInfo == null) {
             return null;
