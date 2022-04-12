@@ -76,3 +76,5 @@ java -jar douyin-spider-0.0.1-SNAPSHOT.jar
 cat /dev/null > /www/wwwroot/douyin-register-spider/target/nohup.out
 ```
 
+此代码仅供学习参考,设备信息版本太老,利用率很低的.
+如果访问接口出现3072表示还需要滑块验证

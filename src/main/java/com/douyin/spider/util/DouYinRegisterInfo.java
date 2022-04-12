@@ -4,6 +4,9 @@ import org.json.JSONObject;
 
 import java.util.*;
 
+/**
+ * 整理抖音设备注册信息
+ */
 public class DouYinRegisterInfo {
 
     /**
