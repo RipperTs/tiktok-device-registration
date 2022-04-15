@@ -60,7 +60,7 @@ cd target
 java -jar douyin-spider-0.0.1-SNAPSHOT.jar
 ```
 ---
-访问地址: http://localhost:9022/register
+访问地址: http://localhost:8022/register
 
 ---
 

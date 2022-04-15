@@ -1,9 +1,8 @@
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/controller/DouyinController.java
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/service/XGorgonService.java
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/jni/JniDispatchXGorgon.java
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/util/DouYinRegisterInfo_back.java
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/service/RegisterService.java
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/jni/JniDispatchRegister.java
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/DouyinSpiderApplication.java
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/util/URLUtil.java
-/Users/wyf/Downloads/tiktok-device-registration/src/main/java/com/douyin/spider/util/DouYinRegisterInfo.java
+/Users/wyf/JavaProject/tiktok-device-registration/src/main/java/com/douyin/spider/util/DouYinRegisterInfo.java
+/Users/wyf/JavaProject/tiktok-device-registration/src/main/java/com/douyin/spider/DouyinSpiderApplication.java
+/Users/wyf/JavaProject/tiktok-device-registration/src/main/java/com/douyin/spider/service/RegisterService.java
+/Users/wyf/JavaProject/tiktok-device-registration/src/main/java/com/douyin/spider/jni/JniDispatchRegister.java
+/Users/wyf/JavaProject/tiktok-device-registration/src/main/java/com/douyin/spider/util/URLUtil.java
+/Users/wyf/JavaProject/tiktok-device-registration/src/main/java/com/douyin/spider/service/XGorgonService.java
+/Users/wyf/JavaProject/tiktok-device-registration/src/main/java/com/douyin/spider/jni/JniDispatchXGorgon.java
+/Users/wyf/JavaProject/tiktok-device-registration/src/main/java/com/douyin/spider/controller/DouyinController.java
